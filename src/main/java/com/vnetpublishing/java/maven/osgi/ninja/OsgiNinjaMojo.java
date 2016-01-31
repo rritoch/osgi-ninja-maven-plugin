@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLStreamHandler;
+import java.net.URLStreamHandlerFactory;
 
 import javax.xml.bind.JAXBException;
 
@@ -39,6 +41,21 @@ public class OsgiNinjaMojo extends AbstractMojo {
 		if (!bundlePath.isDirectory()) {
 			throw new MojoExecutionException("Bundle path is not a directory");
 		}
+		
+		//System.setProperty( "java.protocol.handler.pkgs", "org.ops4j.pax.url" );
+		
+		URL.setURLStreamHandlerFactory(new URLStreamHandlerFactory() {
+				public URLStreamHandler createURLStreamHandler(String protocol) {
+					if ("wrap".equals(protocol)) {
+						return new org.ops4j.pax.url.wrap.Handler();
+					}
+					if ("mvn".equals(protocol)) {
+						return new org.ops4j.pax.url.mvn.Handler();
+					}
+					return null;
+				}
+		});
+		
 		
 		OsgiUserBundleRespository repository = new OsgiUserBundleRespository(bundlePath);
 		URL srcUrl;

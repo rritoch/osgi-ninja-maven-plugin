@@ -29,5 +29,5 @@ mvn osgi-ninja:update
 
 ## Status
 
-This plugin is in the alpha development stage and is not yet functional
+This plugin is now functional and in beta testing
 
