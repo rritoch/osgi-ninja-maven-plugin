@@ -52,6 +52,11 @@ public class OsgiNinjaMojo extends AbstractMojo {
 					if ("mvn".equals(protocol)) {
 						return new org.ops4j.pax.url.mvn.Handler();
 					}
+					
+					if ("war".equals(protocol)) {
+						return new org.ops4j.pax.url.war.Handler();
+					}
+					
 					return null;
 				}
 		});
